@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
+from flask_cors import CORS  # ✅ Import CORS
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 app = Flask(__name__)
+CORS(app)  # ✅ Enable CORS for all origins (or configure securely below)
 
 client = MongoClient(os.getenv("MONGO_URI"))
 db = client[os.getenv("DB_NAME")]
@@ -29,7 +31,7 @@ def get_employee_info():
 
     response = {
         "name": employee.get("name"),
-        "leave_balance": employee.get("vacation_leave"),  # or sick_leave if needed
+        "leave_balance": employee.get("vacation_leave"),
         "designation": employee.get("position")
     }
 
