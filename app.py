@@ -17,20 +17,20 @@ def home():
 @app.route("/employee-query", methods=["POST"])
 def get_employee_info():
     data = request.json
-    emp_id = data.get("emp_id")  # Sent by Botpress
 
-    if not emp_id:
-        return jsonify({"error": "emp_id missing"}), 400
+    try:
+        emp_id = int(data.get("emp_id"))  # Convert to int to match MongoDB type
+    except (ValueError, TypeError):
+        return jsonify({"error": "Invalid or missing Employee ID"}), 400
 
     employee = employees.find_one({"employee_id": emp_id})
     if not employee:
         return jsonify({"error": "Employee not found"}), 404
 
-    # Example response
     response = {
         "name": employee.get("name"),
-        "leave_balance": employee.get("leave_balance"),
-        "designation": employee.get("designation")
+        "leave_balance": employee.get("vacation_leave"),  # or sick_leave if needed
+        "designation": employee.get("position")
     }
 
     return jsonify(response)
@@ -38,5 +38,3 @@ def get_employee_info():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
-
