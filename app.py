@@ -30,13 +30,22 @@ def get_employee_info():
         return jsonify({"error": "Employee not found"}), 404
 
     response = {
-        "name": employee.get("name"),
-        "leave_balance": employee.get("vacation_leave"),
-        "designation": employee.get("position")
+    "name": employee.get("name"),
+    "leave_balance": employee.get("vacation_leave"),
+    "designation": employee.get("position"),
+    "organizational_unit": employee.get("organizational_unit"),
+    "rank": employee.get("rank"),
+    "hire_date": employee.get("hire_date"),
+    "sick_leave": employee.get("sick_leave"),
+    "basic_pay": employee.get("basic_pay_in_php"),
+    "status": employee.get("employment_status"),
+    "supervisor": employee.get("supervisor")
     }
+
 
     return jsonify(response)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
